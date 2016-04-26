@@ -59,6 +59,61 @@ public class Cellule {
 		
 	}
 	
+	public void CelluleVoisineLosange(Cellule[][] grille, int colonne, int ligne){
+		
+		int longueur = grille.length;
+		int hauteur = grille[0].length; 
+		
+		grille[ligne][colonne].listeVoisin = new ArrayList<Cellule>();
+		 
+		if(ligne != 0){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne]);
+		}
+		
+		if(ligne != hauteur){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne+1][colonne]);
+		}
+		
+		if(colonne != longueur && ligne != 0){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne+1]);
+		}
+		
+		if(colonne != longueur && ligne != hauteur){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne+1][colonne+1]);
+		}
+		
+	}
 	
-	
+        
+        public void CelluleVoisineHexagone(Cellule[][] grille, int colonne, int ligne){
+		
+		int longueur = grille.length;
+		int hauteur = grille[0].length; 
+		
+		grille[ligne][colonne].listeVoisin = new ArrayList<Cellule>();
+		 
+		if(ligne != 0){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne]);
+		}
+		
+		if(ligne != hauteur){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne+1][colonne]);
+		}
+		
+		if(colonne != 0){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne][colonne-1]);
+		}
+		
+		if(colonne != longueur){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne][colonne+1]);
+		}
+		
+                if(colonne != longueur && ligne != 0){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne+1]);
+		}
+		
+		if(colonne != longueur && ligne != hauteur){
+			grille[ligne][colonne].listeVoisin.add(grille[ligne+1][colonne+1]);
+		}
+	}
 }

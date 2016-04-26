@@ -4,7 +4,7 @@ public class Cellule {
 	String couleur;
 	int territoire;
 	int verifie;
-	ArrayList listeVoisin;
+	ArrayList<Cellule> listeVoisin;
 	
 	public Cellule(){
 		territoire = 0;
@@ -39,7 +39,7 @@ public class Cellule {
 		int longueur = grille.length;
 		int hauteur = grille[0].length; 
 		
-		grille[ligne][colonne].listeVoisin = new ArrayList<Cellule>();
+		grille[ligne][colonne].listeVoisin = new ArrayList();
 		 
 		if(ligne != 0){
 			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne]);
@@ -64,7 +64,7 @@ public class Cellule {
 		int longueur = grille.length;
 		int hauteur = grille[0].length; 
 		
-		grille[ligne][colonne].listeVoisin = new ArrayList<Cellule>();
+		grille[ligne][colonne].listeVoisin = new ArrayList();
 		 
 		if(ligne != 0){
 			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne]);
@@ -90,7 +90,7 @@ public class Cellule {
 		int longueur = grille.length;
 		int hauteur = grille[0].length; 
 		
-		grille[ligne][colonne].listeVoisin = new ArrayList<Cellule>();
+		grille[ligne][colonne].listeVoisin = new ArrayList();
 		 
 		if(ligne != 0){
 			grille[ligne][colonne].listeVoisin.add(grille[ligne-1][colonne]);
@@ -124,9 +124,9 @@ public class Cellule {
             
         }
         
-        public void ChangementTerritoire(){
+        public void ChangementTerritoire(int joueur){
             
-            this.territoire=1;
+            this.territoire=joueur;
             this.verifie=1;
             
         }

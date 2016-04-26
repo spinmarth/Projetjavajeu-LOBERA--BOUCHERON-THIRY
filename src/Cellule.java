@@ -116,4 +116,20 @@ public class Cellule {
 			grille[ligne][colonne].listeVoisin.add(grille[ligne+1][colonne+1]);
 		}
 	}
+        
+        public void ChangementCouleur(String couleur){
+            
+            this.couleur=couleur;
+            this.verifie=1;
+            
+        }
+        
+        public void ChangementTerritoire(){
+            
+            this.territoire=1;
+            this.verifie=1;
+            
+        }
+        
+        
 }

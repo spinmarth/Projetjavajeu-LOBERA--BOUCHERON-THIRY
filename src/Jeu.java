@@ -1,9 +1,13 @@
 import java.util.ArrayList;
 public class Jeu {
 	
-    Cellule [][] grilleCellule;
-    Joueur [] listeJoueur;
+    public Cellule [][] grilleCellule;
+    public Joueur [] listeJoueur;
+    public int tailleGrille;
 
+    public Jeu(){
+        tailleGrille = 13;
+    }
     
     public void GainTerritoire(int numeroJoueur, String couleur){
         
@@ -58,5 +62,9 @@ public class Jeu {
             
         }
         
+    }
+    
+    public int getTailleGrille(){
+        return tailleGrille;
     }
 }

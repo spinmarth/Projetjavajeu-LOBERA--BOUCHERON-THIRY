@@ -5,5 +5,10 @@ public class Joueur {
     String nom;
     int ligneTerritoire;
     int colonneTerritoire;
+ 
+    public Joueur(){
+        couleur = null;
+        nom = "";
         
+    }
 }

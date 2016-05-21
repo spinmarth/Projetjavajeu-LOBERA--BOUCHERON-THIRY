@@ -2,7 +2,7 @@ import java.util.ArrayList;
 public class Jeu {
 	
     public Cellule [][] grilleCellule;
-    public Joueur [] listeJoueur = new Joueur[4];
+    public ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
     public int tailleGrille;
 
     public Jeu(){
@@ -245,11 +245,17 @@ public class Jeu {
         }
     }
     
-    public void CreationListeJoueur(){
+    public void AddNewJoueur(String nom){
         
-        for(int i=0; i<this.listeJoueur.length; i++){
-            
-            listeJoueur[i] = new Joueur();
+        if(listeJoueur.size()<4){
+            listeJoueur.add(new Joueur(nom));
+        }
+    }
+    
+    public void AddNewIa(int num){
+        
+        if(listeJoueur.size()<4){
+            listeJoueur.add(new Joueur(num));
         }
     }
     

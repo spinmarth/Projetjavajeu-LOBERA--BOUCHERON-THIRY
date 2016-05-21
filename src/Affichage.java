@@ -46,7 +46,6 @@ public class Affichage extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-        jeu.CreationListeJoueur();
         
         CreationMenu();
         CreationMenuTaille();
@@ -244,9 +243,9 @@ public class Affichage extends JFrame {
                 titreMenu2.setAlignmentX(Component.CENTER_ALIGNMENT);
                 barreJoueur2.add(titreMenu2);
                 
-                for (int i=0; i<4; i++){
+                for (int i=0; i<jeu.listeJoueur.size(); i++){
                     
-                    listeLabel[i] = new JLabel(jeu.listeJoueur[i].nom);
+                    listeLabel[i] = new JLabel(jeu.listeJoueur.get(i).nom);
                     listeLabel[i].setFont(new Font("Arial", Font.BOLD, 16));
                     listeLabel[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                     barreJoueur2.add(listeLabel[i]);
@@ -302,6 +301,20 @@ public class Affichage extends JFrame {
         int tailleGrille = jeu.getTailleGrille();
         String strTailleGrille = Integer.toString(tailleGrille);
         taille.setText(strTailleGrille);
+    }
+    
+    public void modifMenuJoueur(){
+        
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+                    
+            listeLabel[i] = new JLabel(jeu.listeJoueur.get(i).nom);
+            listeLabel[i].setFont(new Font("Arial", Font.BOLD, 16));
+            listeLabel[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            barreJoueur2.add(listeLabel[i]);
+        }
+        
+        
+        
     }
     
     class Bouton1Listener implements ActionListener {
@@ -391,33 +404,31 @@ public class Affichage extends JFrame {
     
     class AjoutJoueur implements ActionListener {
 
-        
         public void actionPerformed(ActionEvent e) {
+            String nomJoueur = txtJoueur.getText();
+            jeu.AddNewJoueur(nomJoueur);
             
         }
     }
     
     class AjoutIA1 implements ActionListener {
 
-        
         public void actionPerformed(ActionEvent e) {
-            
+            jeu.AddNewIa(1);
         }
     }
     
     class AjoutIA2 implements ActionListener {
 
-        
         public void actionPerformed(ActionEvent e) {
-            
+            jeu.AddNewIa(2);
         }
     }
     
     class AjoutIA3 implements ActionListener {
 
-        
         public void actionPerformed(ActionEvent e) {
-            
+            jeu.AddNewIa(3);
         }
     }
     

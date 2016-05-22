@@ -27,15 +27,24 @@ public class Affichage extends JFrame {
     private JPanel barreJoueur1 = new JPanel();
     private JPanel barreJoueur2 = new JPanel();
     private JPanel barreJoueur3 = new JPanel();
+    private JPanel menuJeu;
+    private JPanel menuJeuNorth;
+    private JPanel menuJeuCenter;
+    private JPanel menuJeuSouth;
+    private JPanel menuJeuEast;
+    
     
     private JLabel taille = new JLabel();
     private JLabel[] listeLabel = new JLabel[4]; 
+    private JLabel[] listeLabelJeu = new JLabel[8]; 
     
     private JTextField txtJoueur = new JTextField("Nom joueur");
     
     private Dimension dim = new Dimension(250, 70);
     private Dimension dim2 = new Dimension(100, 40);
     private Dimension dim3 = new Dimension(150, 55);
+    
+    private int compteurTour;
     
     private Jeu jeu = new Jeu();
     
@@ -137,6 +146,17 @@ public class Affichage extends JFrame {
         this.repaint();
     }
     
+    public void RemoveMenuJeu(){
+        this.remove(menuJeu);
+
+    }
+    
+    public void AddMenuJeu(){
+        this.add(menuJeu);
+        this.validate();
+        this.repaint();
+    }
+    
     public void CreationMenuTaille(){
         
         menuTaille.setLayout(new BoxLayout(menuTaille, BoxLayout.Y_AXIS));
@@ -233,26 +253,28 @@ public class Affichage extends JFrame {
         titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         barreJoueur1.setLayout(new BoxLayout(barreJoueur1, BoxLayout.X_AXIS));
-        barreJoueur1.setMaximumSize(new Dimension(600,500));
+        barreJoueur1.setMaximumSize(new Dimension(500,500));
         
             barreJoueur2.setLayout(new BoxLayout(barreJoueur2, BoxLayout.Y_AXIS));
-            barreJoueur2.setMaximumSize(new Dimension(600,300));
+            barreJoueur2.setMaximumSize(new Dimension(500,300));
                 
                 JLabel titreMenu2 = new JLabel ("Liste participants");
                 titreMenu2.setFont(new Font("Arial",Font.BOLD, 24));
                 titreMenu2.setAlignmentX(Component.CENTER_ALIGNMENT);
                 barreJoueur2.add(titreMenu2);
+                barreJoueur2.add(Box.createRigidArea(new Dimension(1,30)));
                 
-                for (int i=0; i<jeu.listeJoueur.size(); i++){
+                for (int i=0; i<4; i++){
                     
-                    listeLabel[i] = new JLabel(jeu.listeJoueur.get(i).nom);
+                    listeLabel[i] = new JLabel();
                     listeLabel[i].setFont(new Font("Arial", Font.BOLD, 16));
                     listeLabel[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                     barreJoueur2.add(listeLabel[i]);
+                    barreJoueur2.add(Box.createRigidArea(new Dimension(1,30)));
                 } 
             
             barreJoueur3.setLayout(new BoxLayout(barreJoueur3, BoxLayout.Y_AXIS));
-            barreJoueur3.setMaximumSize(new Dimension(600,300));
+            barreJoueur3.setMaximumSize(new Dimension(500,300));
                 
                 txtJoueur.setMaximumSize(dim2);
                             
@@ -290,11 +312,100 @@ public class Affichage extends JFrame {
             barreJoueur1.add(barreJoueur2);
             barreJoueur1.add(barreJoueur3);
                 
-        menuJoueur.add(Box.createVerticalStrut(50));
+        menuJoueur.add(Box.createVerticalStrut(30));
         menuJoueur.add(titreMenu);
         
         menuJoueur.add(barreJoueur1);
+        
+        JButton valide = new JButton("Validez");
+        valide.setMaximumSize(dim);
+        valide.setAlignmentX(Component.CENTER_ALIGNMENT);
+        valide.addActionListener(new ValideMenuJoueur());
+        
+        menuJoueur.add(valide);
+        menuJoueur.add(Box.createVerticalStrut(30));
+
+    }
     
+    public void CreationMenuJeu(){
+        
+        menuJeu = new JPanel();
+        
+        menuJeuNorth = new JPanel();
+        menuJeuNorth.setLayout(new BoxLayout(menuJeuNorth, BoxLayout.Y_AXIS));
+        menuJeuNorth.setSize(150,600);
+        
+            Font police = new Font("Arial", Font.BOLD, 36);
+            JLabel titreMenu = new JLabel ("Jeu des couleurs : Tour " + Integer.toString(compteurTour+1));
+            titreMenu.setFont(police);
+            titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            menuJeuNorth.add(titreMenu);
+            
+        menuJeuCenter = new JPanel();
+        menuJeuCenter.setSize(500,500);
+        
+            
+        
+        menuJeuEast = new JPanel();
+        menuJeuEast.setSize(500,100);
+        menuJeuEast.setLayout(new BoxLayout(menuJeuEast, BoxLayout.Y_AXIS));
+        
+                     
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                listeLabelJeu[i] = new JLabel();
+                listeLabelJeu[i+1] = new JLabel();
+                listeLabelJeu[i].setText(jeu.listeJoueur.get(i).nom);
+                listeLabelJeu[i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
+                
+                if (compteurTour % jeu.listeJoueur.size() == i){
+                    listeLabelJeu[i].setFont(new Font("Arial", Font.BOLD,16));
+                }
+                else{
+                    listeLabelJeu[i].setFont(new Font("Arial", Font.PLAIN, 12));
+                }
+                menuJeuEast.add(listeLabelJeu[i]);
+                menuJeuEast.add(listeLabelJeu[i+1]);
+            }
+        
+        menuJeuSouth = new JPanel();
+        menuJeuSouth.setSize(150,600);
+        menuJeuSouth.setLayout(new BoxLayout(menuJeuSouth, BoxLayout.X_AXIS));
+        
+            JButton boutonJaune = new JButton("Joueur");
+            boutonJaune.setMaximumSize(dim2);
+            boutonJaune.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonJaune.addActionListener(new ChoixCouleur());
+            
+            JButton boutonRouge = new JButton("Joueur");
+            boutonRouge.setMaximumSize(dim2);
+            boutonRouge.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonRouge.addActionListener(new ChoixCouleur());
+            
+            JButton boutonVert = new JButton("Joueur");
+            boutonVert.setMaximumSize(dim2);
+            boutonVert.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonVert.addActionListener(new ChoixCouleur());
+            
+            JButton boutonBleu = new JButton("Joueur");
+            boutonBleu.setMaximumSize(dim2);
+            boutonBleu.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonBleu.addActionListener(new ChoixCouleur());
+            
+            JButton boutonOrange = new JButton("Joueur");
+            boutonOrange.setMaximumSize(dim2);
+            boutonOrange.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonOrange.addActionListener(new ChoixCouleur());
+            
+            JButton boutonViolet = new JButton("Joueur");
+            boutonViolet.setMaximumSize(dim2);
+            boutonViolet.setAlignmentX(Component.CENTER_ALIGNMENT);
+            boutonViolet.addActionListener(new ChoixCouleur());
+            
+        
+        
+        
     }
 
     public void modifMenuTaille(){
@@ -307,11 +418,10 @@ public class Affichage extends JFrame {
         
         for (int i=0; i<jeu.listeJoueur.size(); i++){
                     
-            listeLabel[i] = new JLabel(jeu.listeJoueur.get(i).nom);
-            listeLabel[i].setFont(new Font("Arial", Font.BOLD, 16));
-            listeLabel[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-            barreJoueur2.add(listeLabel[i]);
+            listeLabel[i].setText(jeu.listeJoueur.get(i).nom);
+            
         }
+
         
         
         
@@ -407,6 +517,7 @@ public class Affichage extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String nomJoueur = txtJoueur.getText();
             jeu.AddNewJoueur(nomJoueur);
+            modifMenuJoueur();
             
         }
     }
@@ -415,6 +526,7 @@ public class Affichage extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             jeu.AddNewIa(1);
+            modifMenuJoueur();
         }
     }
     
@@ -422,6 +534,7 @@ public class Affichage extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             jeu.AddNewIa(2);
+            modifMenuJoueur();
         }
     }
     
@@ -429,8 +542,32 @@ public class Affichage extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             jeu.AddNewIa(3);
+            modifMenuJoueur();
         }
     }
     
+    class ValideMenuJoueur implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            if (jeu.listeJoueur.size()>1){
+                
+                jeu.AddCouleurJoueur();
+                CreationMenuJeu();
+                RemoveMenuJoueur();
+                AddMenuJeu();
+                
+            }
+            
+            
+        }
+    }
     
+    class ChoixCouleur implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            
+        }
+    }
 }

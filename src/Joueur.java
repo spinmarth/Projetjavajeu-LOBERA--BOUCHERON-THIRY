@@ -6,11 +6,13 @@ public class Joueur {
     int iA;
     int ligneTerritoire;
     int colonneTerritoire;
+    int score;
  
     public Joueur(String nomm){
         couleur = null;
         nom = nomm;
         iA = 0;
+        score = 1;
         
     }
     
@@ -18,6 +20,13 @@ public class Joueur {
         couleur = null;
         nom = "IA";
         iA = num;
+        score = 1;
+        
+    }
+    
+    public void AddCouleur(String couleurr){
+        
+        this.couleur = couleurr;
         
     }
 }

@@ -58,7 +58,99 @@ public class Jeu {
             couleur4 = grilleCellule[this.tailleGrille - 1][this.tailleGrille - 1].getCouleur();
         }
     }
+    public int Gainterritoireauxi(int tour){
+        int i=0;
+        int j=0;
+        switch( tour % listeJoueur.size()){
+            case 0 :
+                i=0;
+                j=0;
+            case 1 :
+                i=tailleGrille;
+                j=tailleGrille;
+            case 2 :
+                i=tailleGrille;
+                j=0;
+            case 3 :
+                i=0;
+                j=tailleGrille;
+        }
+        return(i);
+    }
+    public int Gainterritoireauxj(int tour){
+        int i=0;
+        int j=0;
+        switch( tour % listeJoueur.size()){
+            case 0 :
+                i=0;
+                j=0;
+            case 1 :
+                i=tailleGrille;
+                j=tailleGrille;
+            case 2 :
+                i=tailleGrille;
+                j=0;
+            case 3 :
+                i=0;
+                j=tailleGrille;
+        }
+        return(j);
+    }
     
+     public void GainTerritoire(int tour, String couleur){
+        
+        ArrayList<Cellule> liste = new ArrayList();
+        Cellule celluleMere = this.grilleCellule[Gainterritoireauxi(tour)][Gainterritoireauxj(tour)];
+        int taille = celluleMere.listeVoisin.size();
+        for (int i=0; i<taille; i++){
+            liste.add(celluleMere.listeVoisin.get(i));
+        }
+        celluleMere.ChangementCouleur(couleur);
+        
+        while(!liste.isEmpty()){
+            Cellule cellule = liste.get(0);
+            taille = cellule.listeVoisin.size();
+            
+            if(cellule.territoire == 0){
+                if(cellule.couleur.equals(celluleMere.couleur)){
+                    cellule.ChangementTerritoire(tour % listeJoueur.size());
+                    
+                    for (int i=0; i<taille; i++){
+                          
+                    if(cellule.listeVoisin.get(i).verifie == 0){
+                    
+                        liste.add(cellule.listeVoisin.get(i));
+                        cellule.listeVoisin.get(i).verifie = 1;
+                        
+                        }
+                    }
+                }
+                else{
+                    cellule.verifie = 1; 
+                }
+            }
+
+            else if(cellule.territoire == celluleMere.territoire){
+                cellule.ChangementCouleur(couleur);
+                
+                for (int i=0; i<taille; i++){
+                          
+                    if(cellule.listeVoisin.get(i).verifie == 0){
+                    
+                        liste.add(cellule.listeVoisin.get(i));
+                        cellule.listeVoisin.get(i).verifie = 1;
+                    }
+                }
+            } 
+            else{
+                cellule.verifie = 1;
+            }
+           
+            
+            
+        }
+        
+    }
     
     
     public void CelluleVoisineCarre(){

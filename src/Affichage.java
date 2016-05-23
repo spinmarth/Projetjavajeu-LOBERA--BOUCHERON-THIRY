@@ -371,36 +371,47 @@ public class Affichage extends JFrame {
         menuJeuSouth.setSize(150,600);
         menuJeuSouth.setLayout(new BoxLayout(menuJeuSouth, BoxLayout.X_AXIS));
         
-            JButton boutonJaune = new JButton("Joueur");
+            JButton boutonJaune = new JButton("Jaune");
             boutonJaune.setMaximumSize(dim2);
             boutonJaune.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonJaune.addActionListener(new ChoixCouleur());
             
-            JButton boutonRouge = new JButton("Joueur");
+            JButton boutonRouge = new JButton("Rouge");
             boutonRouge.setMaximumSize(dim2);
             boutonRouge.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonRouge.addActionListener(new ChoixCouleur());
             
-            JButton boutonVert = new JButton("Joueur");
+            JButton boutonVert = new JButton("Vert");
             boutonVert.setMaximumSize(dim2);
             boutonVert.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonVert.addActionListener(new ChoixCouleur());
             
-            JButton boutonBleu = new JButton("Joueur");
+            JButton boutonBleu = new JButton("Bleu");
             boutonBleu.setMaximumSize(dim2);
             boutonBleu.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonBleu.addActionListener(new ChoixCouleur());
             
-            JButton boutonOrange = new JButton("Joueur");
+            JButton boutonOrange = new JButton("Orange");
             boutonOrange.setMaximumSize(dim2);
             boutonOrange.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonOrange.addActionListener(new ChoixCouleur());
             
-            JButton boutonViolet = new JButton("Joueur");
+            JButton boutonViolet = new JButton("Violet");
             boutonViolet.setMaximumSize(dim2);
             boutonViolet.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonViolet.addActionListener(new ChoixCouleur());
             
+            menuJeuSouth.add(boutonJaune);
+            menuJeuSouth.add(boutonRouge);
+            menuJeuSouth.add(boutonVert);
+            menuJeuSouth.add(boutonBleu);
+            menuJeuSouth.add(boutonOrange);
+            menuJeuSouth.add(boutonViolet);
+            
+        menuJeu.add(menuJeuNorth, BorderLayout.NORTH);
+        menuJeu.add(menuJeuSouth, BorderLayout.SOUTH);
+        menuJeu.add(menuJeuCenter, BorderLayout.CENTER);
+        menuJeu.add(menuJeuEast, BorderLayout.EAST);
         
         
         

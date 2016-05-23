@@ -438,4 +438,10 @@ public class Jeu {
             }
         }
     }
+    public int Calculpoint(int joueur){
+        
+    }
+     public boolean estfinie(int tour){
+        
+    }
 }

@@ -12,7 +12,7 @@ public class Jeu {
     
     public void DiminueTaille(){
         
-        if (tailleGrille>7){
+        if (tailleGrille>10){
             tailleGrille = tailleGrille - 1;
         }
         

@@ -317,7 +317,7 @@ public class Affichage extends JFrame {
         
         menuJoueur.add(barreJoueur1);
         
-        JButton valide = new JButton("Validez");
+        JButton valide = new JButton("Valider");
         valide.setMaximumSize(dim);
         valide.setAlignmentX(Component.CENTER_ALIGNMENT);
         valide.addActionListener(new ValideMenuJoueur());
@@ -342,10 +342,8 @@ public class Affichage extends JFrame {
             
             menuJeuNorth.add(titreMenu);
             
-        menuJeuCenter = new JPanel();
-        menuJeuCenter.setSize(500,500);
-        
-            
+        menuJeuCenter = new Grille();
+        menuJeuCenter.setSize(500,500);          
         
         menuJeuEast = new JPanel();
         menuJeuEast.setSize(500,100);

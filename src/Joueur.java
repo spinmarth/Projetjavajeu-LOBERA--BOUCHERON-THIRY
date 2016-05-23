@@ -4,8 +4,6 @@ public class Joueur {
     String couleur;
     String nom;
     int iA;
-    int ligneTerritoire;
-    int colonneTerritoire;
     int score;
  
     public Joueur(String nomm){

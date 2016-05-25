@@ -29,10 +29,9 @@ public class Affichage extends JFrame {
     private JPanel barreJoueur3 = new JPanel();
     private JPanel menuJeu;
     private JPanel menuJeuNorth;
-    private JPanel menuJeuCenter;
+    private Grille menuJeuCenter;
     private JPanel menuJeuSouth;
     private JPanel menuJeuEast;
-    
     
     private JLabel taille = new JLabel();
     private JLabel[] listeLabel = new JLabel[4]; 
@@ -341,9 +340,11 @@ public class Affichage extends JFrame {
             titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
             
             menuJeuNorth.add(titreMenu);
-            
+        
+        menuJeuCenter.setJeu(jeu);    
         menuJeuCenter = new Grille();
-        menuJeuCenter.setSize(500,500);          
+        menuJeuCenter.setSize(500,500);
+       
         
         menuJeuEast = new JPanel();
         menuJeuEast.setSize(500,100);
@@ -430,10 +431,6 @@ public class Affichage extends JFrame {
             listeLabel[i].setText(jeu.listeJoueur.get(i).nom);
             
         }
-
-        
-        
-        
     }
     
     class Bouton1Listener implements ActionListener {
@@ -566,9 +563,7 @@ public class Affichage extends JFrame {
                 RemoveMenuJoueur();
                 AddMenuJeu();
                 
-            }
-            
-            
+            }   
         }
     }
     

@@ -3,7 +3,13 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class Grille extends JPanel {
-    public void paintComponent(Graphics g, Jeu jeu){
+    
+    Jeu jeu=null;
+    
+    @Override
+    public void paintComponent(Graphics g){
+        
+        
         
         switch(jeu.formeCase){
             case 1:
@@ -116,5 +122,9 @@ public class Grille extends JPanel {
             
         }
         
+    }
+    
+    public void setJeu(Jeu jeuu){
+        this.jeu=jeuu;
     }
 }

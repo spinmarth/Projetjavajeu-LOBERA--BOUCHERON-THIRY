@@ -27,15 +27,17 @@ public class Affichage extends JFrame {
     private JPanel barreJoueur1 = new JPanel();
     private JPanel barreJoueur2 = new JPanel();
     private JPanel barreJoueur3 = new JPanel();
-    private JPanel menuJeu;
-    private JPanel menuJeuNorth;
+    private JPanel menuJeu = new JPanel();
+    private JPanel menuJeuNorth = new JPanel();
     private Grille menuJeuCenter;
-    private JPanel menuJeuSouth;
-    private JPanel menuJeuEast;
+    private JPanel menuJeuSouth = new JPanel();
+    private JPanel menuJeuEast = new JPanel();
+    private JPanel menuJeuWest = new JPanel();
     
     private JLabel taille = new JLabel();
     private JLabel[] listeLabel = new JLabel[4]; 
     private JLabel[] listeLabelJeu = new JLabel[8]; 
+    private JLabel titreMenuJeu = new JLabel();
     
     private JTextField txtJoueur = new JTextField("Nom joueur");
     
@@ -151,7 +153,7 @@ public class Affichage extends JFrame {
     }
     
     public void AddMenuJeu(){
-        this.add(menuJeu);
+        
         this.validate();
         this.repaint();
     }
@@ -328,94 +330,127 @@ public class Affichage extends JFrame {
     
     public void CreationMenuJeu(){
         
-        menuJeu = new JPanel();
+        menuJeu.setLayout(new BoxLayout(menuJeu, BoxLayout.Y_AXIS));
+ 
+        menuJeuNorth.setLayout(new BoxLayout(menuJeuNorth, BoxLayout.X_AXIS));
+        menuJeuNorth.setMaximumSize(new Dimension(800,500));
         
-        menuJeuNorth = new JPanel();
-        menuJeuNorth.setLayout(new BoxLayout(menuJeuNorth, BoxLayout.Y_AXIS));
-        menuJeuNorth.setSize(150,600);
-        
-            Font police = new Font("Arial", Font.BOLD, 36);
-            JLabel titreMenu = new JLabel ("Jeu des couleurs : Tour " + Integer.toString(compteurTour+1));
-            titreMenu.setFont(police);
-            titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
-            
-            menuJeuNorth.add(titreMenu);
-        
-        menuJeuCenter.setJeu(jeu);    
         menuJeuCenter = new Grille();
-        menuJeuCenter.setSize(500,500);
-       
+        menuJeuCenter.setJeu(jeu);
         
-        menuJeuEast = new JPanel();
-        menuJeuEast.setSize(500,100);
+        menuJeuWest.setMaximumSize(new Dimension(500,500));
+       
+        menuJeuEast.setMaximumSize(new Dimension(300,500));
         menuJeuEast.setLayout(new BoxLayout(menuJeuEast, BoxLayout.Y_AXIS));
         
-                     
+            
+            Font police = new Font("Arial", Font.BOLD, 30);
+            titreMenuJeu.setText("Tour " + Integer.toString(compteurTour+1));
+            titreMenuJeu.setFont(police);
+            titreMenuJeu.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
+            menuJeuEast.add(Box.createRigidArea(new Dimension(100,50)));
+            menuJeuEast.add(titreMenuJeu);
+            menuJeuEast.add(Box.createRigidArea(new Dimension(100,50)));
+        
             for (int i=0; i<jeu.listeJoueur.size(); i++){
                 
-                listeLabelJeu[i] = new JLabel();
-                listeLabelJeu[i+1] = new JLabel();
-                listeLabelJeu[i].setText(jeu.listeJoueur.get(i).nom);
-                listeLabelJeu[i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
+                listeLabelJeu[2*i] = new JLabel();
+                listeLabelJeu[2*i+1] = new JLabel();
+                listeLabelJeu[2*i].setText(jeu.listeJoueur.get(i).nom);
+                listeLabelJeu[2*i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                listeLabelJeu[2*i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
+                listeLabelJeu[2*i+1].setAlignmentX(Component.CENTER_ALIGNMENT);
                 
                 if (compteurTour % jeu.listeJoueur.size() == i){
-                    listeLabelJeu[i].setFont(new Font("Arial", Font.BOLD,16));
+                    listeLabelJeu[2*i].setFont(new Font("Arial", Font.BOLD,20));
                 }
                 else{
-                    listeLabelJeu[i].setFont(new Font("Arial", Font.PLAIN, 12));
+                    listeLabelJeu[2*i].setFont(new Font("Arial", Font.PLAIN, 16));
                 }
-                menuJeuEast.add(listeLabelJeu[i]);
-                menuJeuEast.add(listeLabelJeu[i+1]);
+                menuJeuEast.add(listeLabelJeu[2*i]);
+                menuJeuEast.add(Box.createRigidArea(new Dimension(100,10)));
+                menuJeuEast.add(listeLabelJeu[2*i+1]);
+                menuJeuEast.add(Box.createRigidArea(new Dimension(100,25)));
             }
         
         menuJeuSouth = new JPanel();
-        menuJeuSouth.setSize(150,600);
+        menuJeuSouth.setSize(800,100);
         menuJeuSouth.setLayout(new BoxLayout(menuJeuSouth, BoxLayout.X_AXIS));
         
             JButton boutonJaune = new JButton("Jaune");
             boutonJaune.setMaximumSize(dim2);
             boutonJaune.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonJaune.addActionListener(new ChoixCouleur());
+            boutonJaune.addActionListener(new ChoixCouleurJaune());
             
             JButton boutonRouge = new JButton("Rouge");
             boutonRouge.setMaximumSize(dim2);
             boutonRouge.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonRouge.addActionListener(new ChoixCouleur());
+            boutonRouge.addActionListener(new ChoixCouleurRouge());
             
             JButton boutonVert = new JButton("Vert");
             boutonVert.setMaximumSize(dim2);
             boutonVert.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonVert.addActionListener(new ChoixCouleur());
+            boutonVert.addActionListener(new ChoixCouleurVert());
             
             JButton boutonBleu = new JButton("Bleu");
             boutonBleu.setMaximumSize(dim2);
             boutonBleu.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonBleu.addActionListener(new ChoixCouleur());
+            boutonBleu.addActionListener(new ChoixCouleurBleu());
             
             JButton boutonOrange = new JButton("Orange");
             boutonOrange.setMaximumSize(dim2);
             boutonOrange.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonOrange.addActionListener(new ChoixCouleur());
+            boutonOrange.addActionListener(new ChoixCouleurOrange());
             
             JButton boutonViolet = new JButton("Violet");
             boutonViolet.setMaximumSize(dim2);
             boutonViolet.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boutonViolet.addActionListener(new ChoixCouleur());
+            boutonViolet.addActionListener(new ChoixCouleurViolet());
             
             menuJeuSouth.add(boutonJaune);
+            menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
             menuJeuSouth.add(boutonRouge);
+            menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
             menuJeuSouth.add(boutonVert);
+            menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
             menuJeuSouth.add(boutonBleu);
+            menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
             menuJeuSouth.add(boutonOrange);
+            menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
             menuJeuSouth.add(boutonViolet);
             
-        menuJeu.add(menuJeuNorth, BorderLayout.NORTH);
-        menuJeu.add(menuJeuSouth, BorderLayout.SOUTH);
-        menuJeu.add(menuJeuCenter, BorderLayout.CENTER);
-        menuJeu.add(menuJeuEast, BorderLayout.EAST);
+        
+        menuJeuNorth.add(menuJeuCenter);
+        
+        menuJeuNorth.add(menuJeuEast);
+        menuJeuNorth.add(Box.createRigidArea(new Dimension(100,1)));
+        
+           
+        menuJeu.add(menuJeuNorth);
+        menuJeu.add(menuJeuSouth);
         
         
+        this.setContentPane(menuJeu);  
+    }
+    
+    public void ModifMenuJeu(){
         
+        titreMenuJeu.setText("Tour " + Integer.toString(compteurTour+1));
+        
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+            listeLabelJeu[2*i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
+             
+            if (compteurTour % jeu.listeJoueur.size() == i){
+                listeLabelJeu[2*i].setFont(new Font("Arial", Font.BOLD,20));
+            }
+            else{
+                listeLabelJeu[2*i].setFont(new Font("Arial", Font.PLAIN, 16));
+            }
+        }
+        
+        this.repaint();
     }
 
     public void modifMenuTaille(){
@@ -431,6 +466,23 @@ public class Affichage extends JFrame {
             listeLabel[i].setText(jeu.listeJoueur.get(i).nom);
             
         }
+    }
+    
+    public void CheckFinJeu(){
+        
+        int scoreMax = (jeu.tailleGrille * jeu.tailleGrille / 2) + 1;
+        
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            
+            if(jeu.listeJoueur.get(i).score > scoreMax){
+                this.getContentPane().removeAll();
+                AddPanelFinJeu();
+            } 
+        }  
+    }
+    
+    public void AddPanelFinJeu(){
+        
     }
     
     class Bouton1Listener implements ActionListener {
@@ -493,6 +545,7 @@ public class Affichage extends JFrame {
         
         public void actionPerformed(ActionEvent e) {
             jeu.CelluleVoisineCarre();
+            jeu.CheckCouleurVoisin();
             RemoveMenuForme();
             AddMenuJoueur();
         }
@@ -503,6 +556,7 @@ public class Affichage extends JFrame {
         
         public void actionPerformed(ActionEvent e) {
             jeu.CelluleVoisineLosange();
+            jeu.CheckCouleurVoisin();
             RemoveMenuForme();
             AddMenuJoueur();
         }
@@ -513,6 +567,7 @@ public class Affichage extends JFrame {
         
         public void actionPerformed(ActionEvent e) {
             jeu.CelluleVoisineHexagone();
+            jeu.CheckCouleurVoisin();
             RemoveMenuForme();
             AddMenuJoueur();
         }
@@ -558,19 +613,197 @@ public class Affichage extends JFrame {
             
             if (jeu.listeJoueur.size()>1){
                 
+                
                 jeu.AddCouleurJoueur();
                 CreationMenuJeu();
                 RemoveMenuJoueur();
                 AddMenuJeu();
                 
+               
+                
             }   
         }
     }
     
-    class ChoixCouleur implements ActionListener {
+    class ChoixCouleurJaune implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
             
+            boolean check = true;
+            String str = "j";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+            }
+            
+            else{
+                
+            }
+            
+        }
+    }
+    
+    class ChoixCouleurViolet implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            boolean check = true;
+            String str = "n";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+            }
+            
+            else{
+                
+            }
+            
+        }
+    }
+    
+    class ChoixCouleurRouge implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            boolean check = true;
+            String str = "r";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+            }
+            
+            else{
+                
+            }
+            
+        }
+    }
+      
+    class ChoixCouleurVert implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            boolean check = true;
+            String str = "v";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+            }
+            
+            else{
+                
+            }
+            
+        }
+    }
+    
+    class ChoixCouleurOrange implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            boolean check = true;
+            String str = "o";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+            }
+            
+            else{
+                
+            }
+            
+        }
+    }
+    
+    class ChoixCouleurBleu implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            
+            boolean check = true;
+            String str = "b";
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                
+                if(str.equals(jeu.listeJoueur.get(i).couleur)){
+                    check = false;
+                }
+            }
+            
+            if(check){
+                
+                
+                jeu.GainTerritoire(compteurTour, str);
+                CheckFinJeu();
+                compteurTour=compteurTour+1;
+                ModifMenuJeu();
+                
+                
+                
+            }
+            
+            else{
+                
+            }
             
         }
     }

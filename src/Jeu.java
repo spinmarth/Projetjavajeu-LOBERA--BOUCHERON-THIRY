@@ -10,6 +10,22 @@ public class Jeu {
         tailleGrille = 13;
     }
     
+    public Jeu(int x){
+        tailleGrille = 10;
+        grilleCellule = new Cellule[tailleGrille][tailleGrille];
+        
+        for(int i=0; i<tailleGrille; i++){
+            for(int j=0; j<this.tailleGrille; j++){
+                
+                this.grilleCellule[i][j]= new Cellule();
+                
+            }
+        }
+        
+        formeCase = 1;
+        
+    }
+    
     public void DiminueTaille(){
         
         if (tailleGrille>10){
@@ -48,89 +64,104 @@ public class Jeu {
             couleur2 = grilleCellule[this.tailleGrille - 1][0].getCouleur();
         }
         
-        while(couleur3.equals(couleur1) && couleur3.equals(couleur2)){
+        while(couleur3.equals(couleur1) || couleur3.equals(couleur2)){
             grilleCellule[0][this.tailleGrille - 1].ChangementCouleurRandom();
             couleur3 = grilleCellule[0][this.tailleGrille - 1].getCouleur();
         }
         
-        while(couleur4.equals(couleur1) && couleur4.equals(couleur2) && couleur4.equals(couleur3)){
+        while(couleur4.equals(couleur1) || couleur4.equals(couleur2) || couleur4.equals(couleur3)){
             grilleCellule[this.tailleGrille - 1][this.tailleGrille - 1].ChangementCouleurRandom();
             couleur4 = grilleCellule[this.tailleGrille - 1][this.tailleGrille - 1].getCouleur();
         }
     }
     public int Gainterritoireauxi(int tour){
         int i=0;
-        int j=0;
-        switch( tour % listeJoueur.size()){
-            case 0 :
-                i=0;
-                j=0;
-            case 1 :
-                i=tailleGrille;
-                j=tailleGrille;
-            case 2 :
-                i=tailleGrille;
-                j=0;
-            case 3 :
-                i=0;
-                j=tailleGrille;
+        int compare = tour % this.listeJoueur.size();
+        
+        if(compare == 0){
+            i=0;
         }
-        return(i);
+        
+        if(compare == 1){
+            i=this.tailleGrille - 1;
+        }
+        
+        if(compare == 2){
+            i=this.tailleGrille - 1;
+        }
+        
+        if(compare == 3){
+            i=0;
+        }
+        
+        return i;
     }
     public int Gainterritoireauxj(int tour){
-        int i=0;
         int j=0;
-        switch( tour % listeJoueur.size()){
-            case 0 :
-                i=0;
-                j=0;
-            case 1 :
-                i=tailleGrille;
-                j=tailleGrille;
-            case 2 :
-                i=tailleGrille;
-                j=0;
-            case 3 :
-                i=0;
-                j=tailleGrille;
+        int compare = tour % this.listeJoueur.size();
+        
+        if(compare == 0){
+            j=0;
         }
-        return(j);
+        
+        if(compare == 1){
+            j=this.tailleGrille - 1;
+        }
+        
+        if(compare == 2){
+            j=0;
+        }
+        
+        if(compare == 3){
+            j=this.tailleGrille - 1;
+        }
+        
+        return j;
     }
     
      public void GainTerritoire(int tour, String couleur){
         
         ArrayList<Cellule> liste = new ArrayList();
-        Cellule celluleMere = this.grilleCellule[Gainterritoireauxi(tour)][Gainterritoireauxj(tour)];
+        int ligne = Gainterritoireauxi(tour);
+        int colonne = Gainterritoireauxj(tour);
+
+        Cellule celluleMere = this.grilleCellule[ligne][colonne];
+        this.grilleCellule[ligne][colonne].verifie = 1;
         int taille = celluleMere.listeVoisin.size();
         for (int i=0; i<taille; i++){
             liste.add(celluleMere.listeVoisin.get(i));
+            celluleMere.listeVoisin.get(i).verifie=1;
         }
         celluleMere.ChangementCouleur(couleur);
+        this.listeJoueur.get(tour % listeJoueur.size()).couleur = couleur;
         
         while(!liste.isEmpty()){
             Cellule cellule = liste.get(0);
             taille = cellule.listeVoisin.size();
             
             if(cellule.territoire == 0){
+                
                 if(cellule.couleur.equals(celluleMere.couleur)){
                     cellule.ChangementTerritoire(tour % listeJoueur.size());
-                    
+                    this.listeJoueur.get(tour % listeJoueur.size()).score = this.listeJoueur.get(tour % listeJoueur.size()).score +1;
                     for (int i=0; i<taille; i++){
                           
-                    if(cellule.listeVoisin.get(i).verifie == 0){
+                        if(cellule.listeVoisin.get(i).verifie == 0){
                     
-                        liste.add(cellule.listeVoisin.get(i));
-                        cellule.listeVoisin.get(i).verifie = 1;
+                            liste.add(cellule.listeVoisin.get(i));
+                            cellule.listeVoisin.get(i).verifie = 1;
                         
                         }
                     }
                 }
+                
                 else{
                     cellule.verifie = 1; 
                 }
             }
 
             else if(cellule.territoire == celluleMere.territoire){
+                
                 cellule.ChangementCouleur(couleur);
                 
                 for (int i=0; i<taille; i++){
@@ -141,13 +172,20 @@ public class Jeu {
                         cellule.listeVoisin.get(i).verifie = 1;
                     }
                 }
-            } 
-            else{
-                cellule.verifie = 1;
             }
-           
             
+            else{
+                
+                cellule.verifie = 1;
+            }  
             
+            liste.remove(0);
+        }
+        
+        for (int i=0; i<tailleGrille; i++){
+            for (int j=0; j<tailleGrille; j++){
+                this.grilleCellule[i][j].verifie = 0;
+            }
         }
         
     }
@@ -291,6 +329,54 @@ public class Jeu {
         }
     }
     
+    public void CheckCouleurVoisin(){
+        
+        String couleur1 = grilleCellule[0][0].getCouleur();
+        String couleur2 = grilleCellule[this.tailleGrille - 1][0].getCouleur();
+        String couleur3 = grilleCellule[0][this.tailleGrille - 1].getCouleur();
+        String couleur4 = grilleCellule[this.tailleGrille - 1][this.tailleGrille - 1].getCouleur();
+        
+        for (int i=0; i<grilleCellule[0][0].listeVoisin.size(); i++){
+            
+            while(grilleCellule[0][0].listeVoisin.get(i).couleur.equals(couleur1)){
+                
+               grilleCellule[0][0].listeVoisin.get(i).ChangementCouleurRandom();
+                
+            }
+            
+        }
+        
+        for (int i=0; i<grilleCellule[tailleGrille-1][tailleGrille-1].listeVoisin.size(); i++){
+            
+            while(grilleCellule[tailleGrille-1][tailleGrille-1].listeVoisin.get(i).couleur.equals(couleur4)){
+                
+               grilleCellule[tailleGrille-1][tailleGrille-1].listeVoisin.get(i).ChangementCouleurRandom();
+                
+            }
+            
+        }
+        
+        for (int i=0; i<grilleCellule[tailleGrille-1][0].listeVoisin.size(); i++){
+            
+            while(grilleCellule[tailleGrille-1][0].listeVoisin.get(i).couleur.equals(couleur2)){
+                
+               grilleCellule[tailleGrille-1][0].listeVoisin.get(i).ChangementCouleurRandom();
+                
+            }
+            
+        }
+        
+        for (int i=0; i<grilleCellule[0][tailleGrille-1].listeVoisin.size(); i++){
+            
+            while(grilleCellule[0][tailleGrille-1].listeVoisin.get(i).couleur.equals(couleur3)){
+                
+               grilleCellule[0][tailleGrille-1].listeVoisin.get(i).ChangementCouleurRandom();
+                
+            }
+            
+        }
+    }
+    
     public void AddNewJoueur(String nom){
         
         if(listeJoueur.size()<4){
@@ -312,17 +398,23 @@ public class Jeu {
     public void AddCouleurJoueur(){
         
         for(int i=0; i<listeJoueur.size(); i++){
-            switch(i){
-                case 1 : 
+            if(i==0){ 
                     this.listeJoueur.get(i).AddCouleur(this.grilleCellule[0][0].couleur);
-            
-                case 2 :
+                    this.grilleCellule[0][0].territoire=1;
+            }
+            if(i==1){
                     this.listeJoueur.get(i).AddCouleur(this.grilleCellule[tailleGrille-1][tailleGrille-1].couleur);
-                
-                case 3 :
+                    this.grilleCellule[tailleGrille-1][tailleGrille-1].territoire=2;
+            }        
+                    
+            if(i == 2){
                     this.listeJoueur.get(i).AddCouleur(this.grilleCellule[tailleGrille-1][0].couleur);
-                case 4 :
+                    this.grilleCellule[tailleGrille-1][0].territoire=3;
+            }
+            
+            if(i == 3){
                     this.listeJoueur.get(i).AddCouleur(this.grilleCellule[0][tailleGrille-1].couleur);
+                    this.grilleCellule[0][tailleGrille-1].territoire=4;
             }
         }
     }

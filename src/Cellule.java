@@ -68,12 +68,12 @@ public class Cellule {
         
     public void ChangementTerritoire(int joueur){
             
-        this.territoire=joueur;
+        this.territoire=joueur+1;
         this.verifie=1;
             
     }    
     
     public String getCouleur(){
-        return couleur;
+        return this.couleur;
     }
 }

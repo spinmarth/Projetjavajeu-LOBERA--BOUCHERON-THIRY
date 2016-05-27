@@ -10,6 +10,26 @@ public class Jeu {
         tailleGrille = 13;
     }
     
+    public Jeu(Jeu jeuuu){
+        tailleGrille = jeuuu.tailleGrille;
+        formeCase = jeuuu.formeCase;
+        grilleCellule = new Cellule[tailleGrille][tailleGrille];
+        
+        for(int i=0; i<tailleGrille; i++){
+            for(int j=0; j<tailleGrille; j++){
+                
+                grilleCellule[i][j] = new Cellule(jeuuu.grilleCellule[i][j]);
+                
+            }
+        }
+        listeJoueur = new ArrayList<Joueur>();
+        
+        for (int i=0; i<jeuuu.listeJoueur.size(); i++){
+            listeJoueur.add(new Joueur(jeuuu.listeJoueur.get(i)));
+        }
+                
+    }
+    
     public Jeu(int x){
         tailleGrille = 10;
         grilleCellule = new Cellule[tailleGrille][tailleGrille];

@@ -33,6 +33,14 @@ public class Cellule {
             this.couleur = "n";
 	}
     }
+    
+    public Cellule(Cellule cellule){
+        
+        territoire=cellule.territoire;
+        verifie = 0;
+        listeVoisin = new ArrayList<Cellule>();
+        couleur = cellule.couleur;
+    }
  
     public void ChangementCouleurRandom(){
         

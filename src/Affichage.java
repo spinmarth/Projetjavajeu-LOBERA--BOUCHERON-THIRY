@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -33,6 +32,7 @@ public class Affichage extends JFrame {
     private JPanel menuJeuSouth = new JPanel();
     private JPanel menuJeuEast = new JPanel();
     private JPanel menuJeuWest = new JPanel();
+    private JPanel panelFinJeu = new JPanel();
     
     private JLabel taille = new JLabel();
     private JLabel[] listeLabel = new JLabel[4]; 
@@ -45,7 +45,15 @@ public class Affichage extends JFrame {
     private Dimension dim2 = new Dimension(100, 40);
     private Dimension dim3 = new Dimension(150, 55);
     
+    private JButton boutonJaune;
+    private JButton boutonVert;
+    private JButton boutonBleu;
+    private JButton boutonOrange;
+    private JButton boutonRouge;
+    private JButton boutonViolet;
+    
     private int compteurTour;
+    private int finJeu=0;
     
     private Jeu jeu = new Jeu();
     
@@ -378,35 +386,133 @@ public class Affichage extends JFrame {
         menuJeuSouth.setSize(800,100);
         menuJeuSouth.setLayout(new BoxLayout(menuJeuSouth, BoxLayout.X_AXIS));
         
-            JButton boutonJaune = new JButton("Jaune");
+            boolean check = true;
+        
+            boutonJaune = new JButton("Jaune");
             boutonJaune.setMaximumSize(dim2);
             boutonJaune.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonJaune.addActionListener(new ChoixCouleurJaune());
             
-            JButton boutonRouge = new JButton("Rouge");
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("j")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonJaune.setBackground(Color.yellow);
+            }
+            
+            else{
+                boutonJaune.setBackground(Color.black);
+            }
+            
+            
+            boutonRouge = new JButton("Rouge");
             boutonRouge.setMaximumSize(dim2);
             boutonRouge.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonRouge.addActionListener(new ChoixCouleurRouge());
             
-            JButton boutonVert = new JButton("Vert");
+            check = true;
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("r")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonRouge.setBackground(Color.red);
+            }
+            
+            else{
+                boutonRouge.setBackground(Color.black);
+            }
+            
+            boutonVert = new JButton("Vert");
             boutonVert.setMaximumSize(dim2);
             boutonVert.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonVert.addActionListener(new ChoixCouleurVert());
             
-            JButton boutonBleu = new JButton("Bleu");
+            check = true;
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("v")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonVert.setBackground(Color.green);
+            }
+            
+            else{
+                boutonVert.setBackground(Color.black);
+            }
+            
+            boutonBleu = new JButton("Bleu");
             boutonBleu.setMaximumSize(dim2);
             boutonBleu.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonBleu.addActionListener(new ChoixCouleurBleu());
             
-            JButton boutonOrange = new JButton("Orange");
+            check = true;
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("b")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonBleu.setBackground(Color.blue);
+            }
+            
+            else{
+                boutonBleu.setBackground(Color.black);
+            }
+            
+            boutonOrange = new JButton("Orange");
             boutonOrange.setMaximumSize(dim2);
             boutonOrange.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonOrange.addActionListener(new ChoixCouleurOrange());
             
-            JButton boutonViolet = new JButton("Violet");
+            check = true;
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("o")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonOrange.setBackground(Color.orange);
+            }
+            
+            else{
+                boutonOrange.setBackground(Color.black);
+            }
+            
+            boutonViolet = new JButton("Violet");
             boutonViolet.setMaximumSize(dim2);
             boutonViolet.setAlignmentX(Component.CENTER_ALIGNMENT);
             boutonViolet.addActionListener(new ChoixCouleurViolet());
+            
+            check = true;
+            
+            for (int i=0; i<jeu.listeJoueur.size(); i++){
+                if(jeu.listeJoueur.get(i).couleur.equals("n")){
+                    check = false;
+                }
+            } 
+            
+            if(check){
+                boutonViolet.setBackground(Color.magenta);
+            }
+            
+            else{
+                boutonViolet.setBackground(Color.black);
+            }
+            
             
             menuJeuSouth.add(boutonJaune);
             menuJeuSouth.add(Box.createRigidArea(new Dimension(15,25)));
@@ -434,7 +540,23 @@ public class Affichage extends JFrame {
         this.setContentPane(menuJeu);  
     }
     
+    public void CreationPanelFinJeu(String nom){
+        
+        panelFinJeu.setLayout(new BoxLayout(panelFinJeu, BoxLayout.Y_AXIS));
+        
+        Font police = new Font("Arial", Font.BOLD, 36);
+        JLabel titreMenu = new JLabel (nom + " a gagné la partie");
+        titreMenu.setFont(police);
+        titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        panelFinJeu.add(Box.createVerticalStrut(250));
+        panelFinJeu.add(titreMenu);
+    
+    }
+    
     public void ModifMenuJeu(){
+        
+        boolean check = true;
         
         titreMenuJeu.setText("Tour " + Integer.toString(compteurTour+1));
         
@@ -448,6 +570,100 @@ public class Affichage extends JFrame {
             else{
                 listeLabelJeu[2*i].setFont(new Font("Arial", Font.PLAIN, 16));
             }
+        }
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("j")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonJaune.setBackground(Color.yellow);
+        }
+            
+        else{
+            boutonJaune.setBackground(Color.black);
+        }
+        
+        check = true;
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("r")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonRouge.setBackground(Color.red);
+        }
+            
+        else{
+            boutonRouge.setBackground(Color.black);
+        }
+        
+        check = true;
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("b")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonBleu.setBackground(Color.blue);
+        }
+            
+        else{
+            boutonBleu.setBackground(Color.black);
+        }
+        
+        check = true;
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("o")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonOrange.setBackground(Color.orange);
+        }
+            
+        else{
+            boutonOrange.setBackground(Color.black);
+        }
+        
+        check = true;
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("v")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonVert.setBackground(Color.green);
+        }
+            
+        else{
+            boutonVert.setBackground(Color.black);
+        }
+        
+        check = true;
+            
+        for (int i=0; i<jeu.listeJoueur.size(); i++){
+            if(jeu.listeJoueur.get(i).couleur.equals("n")){
+                check = false;
+            }
+        } 
+            
+        if(check){
+            boutonViolet.setBackground(Color.magenta);
+        }
+            
+        else{
+            boutonViolet.setBackground(Color.black);
         }
         
         this.repaint();
@@ -471,17 +687,37 @@ public class Affichage extends JFrame {
     public void CheckFinJeu(){
         
         int scoreMax = (jeu.tailleGrille * jeu.tailleGrille / 2) + 1;
+        int compteScore=0;
+        int maxScore=0;
+        int idMaxScore=0;
         
         for (int i=0; i<jeu.listeJoueur.size(); i++){
             
+            compteScore = compteScore + jeu.listeJoueur.get(i).score;
+            
+            if(jeu.listeJoueur.get(i).score > maxScore){
+                maxScore = jeu.listeJoueur.get(i).score;
+                idMaxScore = i;
+            }
+            
             if(jeu.listeJoueur.get(i).score > scoreMax){
                 this.getContentPane().removeAll();
-                AddPanelFinJeu();
+                AddPanelFinJeu(jeu.listeJoueur.get(i).nom);
             } 
-        }  
+        } 
+        
+        if(compteScore == jeu.tailleGrille * jeu.tailleGrille){
+            finJeu = 1;
+            this.getContentPane().removeAll();
+            AddPanelFinJeu(jeu.listeJoueur.get(idMaxScore).nom);
+        }
     }
     
-    public void AddPanelFinJeu(){
+    public void AddPanelFinJeu(String nom){
+        CreationPanelFinJeu(nom);
+        this.add(panelFinJeu);
+        this.validate();
+        this.repaint();
         
     }
     
@@ -490,6 +726,15 @@ public class Affichage extends JFrame {
         
         public void actionPerformed(ActionEvent e) {
             RemoveMenu();
+            jeu.CreationGrille();
+            jeu.CelluleVoisineCarre();
+            jeu.CheckCouleurVoisin();
+            jeu.AddNewJoueur("Vous");
+            jeu.AddNewIa(3);
+            jeu.AddCouleurJoueur();
+            CreationMenuJeu();
+            RemoveMenuJoueur();
+            AddMenuJeu();
         }
     }
     
@@ -586,24 +831,30 @@ public class Affichage extends JFrame {
     class AjoutIA1 implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            jeu.AddNewIa(1);
-            modifMenuJoueur();
+            if(!jeu.listeJoueur.isEmpty()){
+                jeu.AddNewIa(1);
+                modifMenuJoueur();
+            }
         }
     }
     
     class AjoutIA2 implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            jeu.AddNewIa(2);
-            modifMenuJoueur();
+            if(!jeu.listeJoueur.isEmpty()){
+                jeu.AddNewIa(2);
+                modifMenuJoueur();
+            }
         }
     }
     
     class AjoutIA3 implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            jeu.AddNewIa(3);
-            modifMenuJoueur();
+            if(!jeu.listeJoueur.isEmpty()){
+                jeu.AddNewIa(3);
+                modifMenuJoueur();
+            }
         }
     }
     
@@ -612,14 +863,11 @@ public class Affichage extends JFrame {
         public void actionPerformed(ActionEvent e) {
             
             if (jeu.listeJoueur.size()>1){
-                
-                
+                 
                 jeu.AddCouleurJoueur();
                 CreationMenuJeu();
                 RemoveMenuJoueur();
                 AddMenuJeu();
-                
-               
                 
             }   
         }
@@ -644,6 +892,24 @@ public class Affichage extends JFrame {
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
                 compteurTour=compteurTour+1;
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
                 
             }
@@ -674,6 +940,24 @@ public class Affichage extends JFrame {
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
                 compteurTour=compteurTour+1;
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
                 
             }
@@ -704,6 +988,24 @@ public class Affichage extends JFrame {
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
                 compteurTour=compteurTour+1;
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
                 
             }
@@ -734,6 +1036,24 @@ public class Affichage extends JFrame {
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
                 compteurTour=compteurTour+1;
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
                 
             }
@@ -764,6 +1084,24 @@ public class Affichage extends JFrame {
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
                 compteurTour=compteurTour+1;
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
                 
             }
@@ -794,11 +1132,27 @@ public class Affichage extends JFrame {
                 
                 jeu.GainTerritoire(compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
+                compteurTour=compteurTour+1; 
+                
+                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                    
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                        CheckFinJeu();
+                        compteurTour = compteurTour+1;
+                    }
+                }
                 ModifMenuJeu();
-                
-                
-                
             }
             
             else{

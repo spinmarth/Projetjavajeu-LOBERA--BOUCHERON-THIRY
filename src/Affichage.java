@@ -437,11 +437,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonJaune.setBackground(Color.yellow);
+                boutonJaune.setBackground(Color.YELLOW);
             }
             
             else{
-                boutonJaune.setBackground(Color.black);
+                boutonJaune.setBackground(Color.BLACK);
             }
             
             
@@ -459,11 +459,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonRouge.setBackground(Color.red);
+                boutonRouge.setBackground(Color.RED);
             }
             
             else{
-                boutonRouge.setBackground(Color.black);
+                boutonRouge.setBackground(Color.BLACK);
             }
             
             boutonVert = new JButton("Vert");
@@ -480,11 +480,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonVert.setBackground(Color.green);
+                boutonVert.setBackground(Color.GREEN);
             }
             
             else{
-                boutonVert.setBackground(Color.black);
+                boutonVert.setBackground(Color.BLACK);
             }
             
             boutonBleu = new JButton("Bleu");
@@ -501,11 +501,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonBleu.setBackground(Color.blue);
+                boutonBleu.setBackground(Color.BLUE);
             }
             
             else{
-                boutonBleu.setBackground(Color.black);
+                boutonBleu.setBackground(Color.BLACK);
             }
             
             boutonOrange = new JButton("Orange");
@@ -522,11 +522,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonOrange.setBackground(Color.orange);
+                boutonOrange.setBackground(Color.ORANGE);
             }
             
             else{
-                boutonOrange.setBackground(Color.black);
+                boutonOrange.setBackground(Color.BLACK);
             }
             
             boutonViolet = new JButton("Violet");
@@ -543,11 +543,11 @@ public class Affichage extends JFrame {
             } 
             
             if(check){
-                boutonViolet.setBackground(Color.magenta);
+                boutonViolet.setBackground(Color.MAGENTA);
             }
             
             else{
-                boutonViolet.setBackground(Color.black);
+                boutonViolet.setBackground(Color.BLACK);
             }
             
             
@@ -616,11 +616,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonJaune.setBackground(Color.yellow);
+            boutonJaune.setBackground(Color.YELLOW);
         }
             
         else{
-            boutonJaune.setBackground(Color.black);
+            boutonJaune.setBackground(Color.BLACK);
         }
         
         check = true;
@@ -632,11 +632,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonRouge.setBackground(Color.red);
+            boutonRouge.setBackground(Color.RED);
         }
             
         else{
-            boutonRouge.setBackground(Color.black);
+            boutonRouge.setBackground(Color.BLACK);
         }
         
         check = true;
@@ -648,11 +648,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonBleu.setBackground(Color.blue);
+            boutonBleu.setBackground(Color.BLUE);
         }
             
         else{
-            boutonBleu.setBackground(Color.black);
+            boutonBleu.setBackground(Color.BLACK);
         }
         
         check = true;
@@ -664,11 +664,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonOrange.setBackground(Color.orange);
+            boutonOrange.setBackground(Color.ORANGE);
         }
             
         else{
-            boutonOrange.setBackground(Color.black);
+            boutonOrange.setBackground(Color.BLACK);
         }
         
         check = true;
@@ -680,11 +680,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonVert.setBackground(Color.green);
+            boutonVert.setBackground(Color.GREEN);
         }
             
         else{
-            boutonVert.setBackground(Color.black);
+            boutonVert.setBackground(Color.BLACK);
         }
         
         check = true;
@@ -696,11 +696,11 @@ public class Affichage extends JFrame {
         } 
             
         if(check){
-            boutonViolet.setBackground(Color.magenta);
+            boutonViolet.setBackground(Color.MAGENTA);
         }
             
         else{
-            boutonViolet.setBackground(Color.black);
+            boutonViolet.setBackground(Color.BLACK);
         }
         
         this.repaint();

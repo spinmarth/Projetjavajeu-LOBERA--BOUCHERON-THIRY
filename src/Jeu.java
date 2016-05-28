@@ -449,11 +449,19 @@ public class Jeu implements Serializable {
             }
         }
     }
+<<<<<<< HEAD
     
     public void Sauvegarde() throws IOException{
    
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("jeu.tmp"))) { 
             output.writeObject(this);		 
         }
+=======
+    public int Calculpoint(int joueur){
+        
+    }
+     public boolean estfinie(int tour){
+        
+>>>>>>> origin/master
     }
 }

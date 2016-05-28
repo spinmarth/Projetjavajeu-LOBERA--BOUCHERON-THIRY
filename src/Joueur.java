@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Joueur {
+
+public class Joueur implements Serializable {
 
     String couleur;
     String nom;
@@ -230,6 +232,12 @@ public class Joueur {
                 
         }
         
+        while(!(!listeCouleur.get(idScoreMax).equals(couleur1) && !listeCouleur.get(idScoreMax).equals(couleur2) && !listeCouleur.get(idScoreMax).equals(couleur3) && !listeCouleur.get(idScoreMax).equals(couleur4))){
+            
+            idScoreMax = idScoreMax + 1;
+            
+        }
+        
         jjeeuu.GainTerritoire(tour, listeCouleur.get(idScoreMax)); 
             
     }
@@ -275,7 +283,7 @@ public class Joueur {
         
         for(int w=0; w<listeCouleur.size(); w++){
             
-            if(!listeCouleur.get(w).equals(couleur1) && !listeCouleur.get(w).equals(couleur2) && !listeCouleur.get(w).equals(couleur3) && !listeCouleur.get(w).equals(couleur4)){
+            if( !listeCouleur.get(w).equals(couleur1) && !listeCouleur.get(w).equals(couleur2) && !listeCouleur.get(w).equals(couleur3) && !listeCouleur.get(w).equals(couleur4)){
             
                 compteScore = 0;
                 
@@ -368,6 +376,12 @@ public class Joueur {
                     
             }
                 
+        }
+        
+        while(!(!listeCouleur.get(idScoreMax).equals(couleur1) && !listeCouleur.get(idScoreMax).equals(couleur2) && !listeCouleur.get(idScoreMax).equals(couleur3) && !listeCouleur.get(idScoreMax).equals(couleur4))){
+            
+            idScoreMax = idScoreMax + 1;
+            
         }
         
         jjeeuu.GainTerritoire(toour, listeCouleur.get(idScoreMax)); 

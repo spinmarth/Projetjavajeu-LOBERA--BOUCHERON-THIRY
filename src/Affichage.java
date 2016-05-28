@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,7 +16,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Affichage extends JFrame {
@@ -52,7 +62,11 @@ public class Affichage extends JFrame {
     private JButton boutonRouge;
     private JButton boutonViolet;
     
-    private int compteurTour;
+    private JMenu menuBar1 = new JMenu("Options");
+    private JMenuItem retourHome = new JMenuItem("Accueil");
+    private JMenuItem sauvegarde = new JMenuItem("Sauvegarder");
+    private JMenuBar menuBar = new JMenuBar();
+  
     private int finJeu=0;
     
     private Jeu jeu = new Jeu();
@@ -64,6 +78,14 @@ public class Affichage extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
+        
+        retourHome.addActionListener(new RetourHome());
+        sauvegarde.addActionListener(new Sauvegarde());
+        
+        menuBar1.add(retourHome);
+        menuBar1.add(sauvegarde);
+        menuBar.add(menuBar1);
+        this.setJMenuBar(menuBar);
         
         CreationMenu();
         CreationMenuTaille();
@@ -120,6 +142,9 @@ public class Affichage extends JFrame {
         this.add(menu);
         this.validate();
         this.repaint();
+        jeu = new Jeu();
+        CreationMenuTaille();
+        CreationMenuJoueur();
     }
     
     public void RemoveMenuTaille(){
@@ -164,10 +189,13 @@ public class Affichage extends JFrame {
         
         this.validate();
         this.repaint();
+        this.finJeu = 0;
+        
     }
     
     public void CreationMenuTaille(){
         
+        menuTaille = new JPanel();
         menuTaille.setLayout(new BoxLayout(menuTaille, BoxLayout.Y_AXIS));
         
         Font police = new Font("Arial", Font.BOLD, 36);
@@ -175,6 +203,7 @@ public class Affichage extends JFrame {
         titreMenu.setFont(police);
         titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+        barreTaille = new JPanel();
         barreTaille.setLayout(new BoxLayout(barreTaille, BoxLayout.X_AXIS));
         barreTaille.setSize(new Dimension(200,500));
         
@@ -254,6 +283,7 @@ public class Affichage extends JFrame {
     
     public void CreationMenuJoueur(){
     
+        menuJoueur = new JPanel();
         menuJoueur.setLayout(new BoxLayout(menuJoueur, BoxLayout.Y_AXIS));
         
         Font police = new Font("Arial", Font.BOLD, 36);
@@ -261,9 +291,11 @@ public class Affichage extends JFrame {
         titreMenu.setFont(police);
         titreMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+        barreJoueur1 = new JPanel();
         barreJoueur1.setLayout(new BoxLayout(barreJoueur1, BoxLayout.X_AXIS));
         barreJoueur1.setMaximumSize(new Dimension(500,500));
         
+            barreJoueur2 = new JPanel();
             barreJoueur2.setLayout(new BoxLayout(barreJoueur2, BoxLayout.Y_AXIS));
             barreJoueur2.setMaximumSize(new Dimension(500,300));
                 
@@ -282,6 +314,7 @@ public class Affichage extends JFrame {
                     barreJoueur2.add(Box.createRigidArea(new Dimension(1,30)));
                 } 
             
+            barreJoueur3 = new JPanel();
             barreJoueur3.setLayout(new BoxLayout(barreJoueur3, BoxLayout.Y_AXIS));
             barreJoueur3.setMaximumSize(new Dimension(500,300));
                 
@@ -338,22 +371,26 @@ public class Affichage extends JFrame {
     
     public void CreationMenuJeu(){
         
+        menuJeu = new JPanel();
         menuJeu.setLayout(new BoxLayout(menuJeu, BoxLayout.Y_AXIS));
  
+        menuJeuNorth = new JPanel();
         menuJeuNorth.setLayout(new BoxLayout(menuJeuNorth, BoxLayout.X_AXIS));
         menuJeuNorth.setMaximumSize(new Dimension(800,500));
         
         menuJeuCenter = new Grille();
         menuJeuCenter.setJeu(jeu);
         
+        menuJeuWest = new JPanel();
         menuJeuWest.setMaximumSize(new Dimension(500,500));
        
+        menuJeuEast = new JPanel();
         menuJeuEast.setMaximumSize(new Dimension(300,500));
         menuJeuEast.setLayout(new BoxLayout(menuJeuEast, BoxLayout.Y_AXIS));
         
             
             Font police = new Font("Arial", Font.BOLD, 30);
-            titreMenuJeu.setText("Tour " + Integer.toString(compteurTour+1));
+            titreMenuJeu.setText("Tour " + Integer.toString(jeu.compteurTour +1));
             titreMenuJeu.setFont(police);
             titreMenuJeu.setAlignmentX(Component.CENTER_ALIGNMENT);
             
@@ -370,7 +407,7 @@ public class Affichage extends JFrame {
                 listeLabelJeu[2*i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
                 listeLabelJeu[2*i+1].setAlignmentX(Component.CENTER_ALIGNMENT);
                 
-                if (compteurTour % jeu.listeJoueur.size() == i){
+                if (jeu.compteurTour % jeu.listeJoueur.size() == i){
                     listeLabelJeu[2*i].setFont(new Font("Arial", Font.BOLD,20));
                 }
                 else{
@@ -558,13 +595,13 @@ public class Affichage extends JFrame {
         
         boolean check = true;
         
-        titreMenuJeu.setText("Tour " + Integer.toString(compteurTour+1));
+        titreMenuJeu.setText("Tour " + Integer.toString(jeu.compteurTour+1));
         
         for (int i=0; i<jeu.listeJoueur.size(); i++){
                 
             listeLabelJeu[2*i+1].setText(Integer.toString(jeu.listeJoueur.get(i).score));
              
-            if (compteurTour % jeu.listeJoueur.size() == i){
+            if (jeu.compteurTour % jeu.listeJoueur.size() == i){
                 listeLabelJeu[2*i].setFont(new Font("Arial", Font.BOLD,20));
             }
             else{
@@ -684,6 +721,10 @@ public class Affichage extends JFrame {
         }
     }
     
+    public void Sauvegarde() throws IOException{
+        jeu.Sauvegarde();
+    }
+    
     public void CheckFinJeu(){
         
         int scoreMax = (jeu.tailleGrille * jeu.tailleGrille / 2) + 1;
@@ -701,7 +742,9 @@ public class Affichage extends JFrame {
             }
             
             if(jeu.listeJoueur.get(i).score > scoreMax){
+                finJeu=1;
                 this.getContentPane().removeAll();
+                
                 AddPanelFinJeu(jeu.listeJoueur.get(i).nom);
             } 
         } 
@@ -718,6 +761,22 @@ public class Affichage extends JFrame {
         this.add(panelFinJeu);
         this.validate();
         this.repaint();
+        
+    }
+    
+    public void RemoveAll(){
+        this.getContentPane().removeAll();
+        
+    }
+    
+    public void ChargeSauvegarde() throws IOException, ClassNotFoundException, FileNotFoundException{
+        
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream("jeu.tmp"))) { 
+        jeu = (Jeu) input.readObject();
+        RemoveMenu();
+        CreationMenuJeu();
+        AddMenuJeu();
+}
         
     }
     
@@ -740,7 +799,6 @@ public class Affichage extends JFrame {
     
     class Bouton2Listener implements ActionListener {
 
-        
         public void actionPerformed(ActionEvent e) {
             
             RemoveMenu();
@@ -750,15 +808,43 @@ public class Affichage extends JFrame {
     }
     
     class Bouton3Listener implements ActionListener {
-
-        
+  
         public void actionPerformed(ActionEvent e) {
+            
+            try {
+                ChargeSauvegarde();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(Affichage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             
         }
     }
     
-    class DiminueTailleListener implements ActionListener {
+    class RetourHome implements ActionListener {
 
+        
+        public void actionPerformed(ActionEvent e) {
+            
+            RemoveAll();
+            AddMenu();
+            
+ 
+        }
+    }
+    
+    class Sauvegarde implements ActionListener {
+        
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Sauvegarde();
+            } catch (IOException ex) {
+                Logger.getLogger(Affichage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    class DiminueTailleListener implements ActionListener {
         
         public void actionPerformed(ActionEvent e) {
             jeu.DiminueTaille();
@@ -889,25 +975,25 @@ public class Affichage extends JFrame {
             
             if(check){
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                jeu.compteurTour=jeu.compteurTour+1;
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
@@ -937,25 +1023,25 @@ public class Affichage extends JFrame {
             
             if(check){
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                jeu.compteurTour=jeu.compteurTour+1;
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
@@ -985,25 +1071,25 @@ public class Affichage extends JFrame {
             
             if(check){
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                jeu.compteurTour=jeu.compteurTour+1;
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
@@ -1033,25 +1119,25 @@ public class Affichage extends JFrame {
             
             if(check){
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                jeu.compteurTour=jeu.compteurTour+1;
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
@@ -1081,29 +1167,30 @@ public class Affichage extends JFrame {
             
             if(check){
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1;
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                if(finJeu==0){
+                jeu.compteurTour=jeu.compteurTour+1;
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
-                
+                }
             }
             
             else{
@@ -1130,26 +1217,26 @@ public class Affichage extends JFrame {
             if(check){
                 
                 
-                jeu.GainTerritoire(compteurTour, str);
+                jeu.GainTerritoire(jeu.compteurTour, str);
                 CheckFinJeu();
-                compteurTour=compteurTour+1; 
+                jeu.compteurTour=jeu.compteurTour+1; 
                 
-                while(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
+                while(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA != 0 && finJeu==0){
                     
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 1 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 1 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA1(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 2 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 2 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA2(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
-                    if(jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).iA == 3 ){
-                        jeu.listeJoueur.get(compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, compteurTour);
+                    if(jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).iA == 3 ){
+                        jeu.listeJoueur.get(jeu.compteurTour % jeu.listeJoueur.size()).JeuIA3(jeu, jeu.compteurTour);
                         CheckFinJeu();
-                        compteurTour = compteurTour+1;
+                        jeu.compteurTour = jeu.compteurTour+1;
                     }
                 }
                 ModifMenuJeu();
@@ -1158,7 +1245,6 @@ public class Affichage extends JFrame {
             else{
                 
             }
-            
         }
     }
 }

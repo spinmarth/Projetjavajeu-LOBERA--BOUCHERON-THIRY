@@ -1,18 +1,26 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-public class Jeu {
+import java.io.Serializable;
+
+public class Jeu implements Serializable {
 	
     public Cellule [][] grilleCellule;
     public ArrayList<Joueur> listeJoueur = new ArrayList<Joueur>();
     public int tailleGrille;
     public int formeCase;
+    public int compteurTour;
 
     public Jeu(){
         tailleGrille = 13;
+        compteurTour= 0;
     }
     
     public Jeu(Jeu jeuuu){
         tailleGrille = jeuuu.tailleGrille;
         formeCase = jeuuu.formeCase;
+        compteurTour= 0;
         grilleCellule = new Cellule[tailleGrille][tailleGrille];
         
         for(int i=0; i<tailleGrille; i++){
@@ -33,6 +41,7 @@ public class Jeu {
     public Jeu(int x){
         tailleGrille = 10;
         grilleCellule = new Cellule[tailleGrille][tailleGrille];
+        compteurTour= 0;
         
         for(int i=0; i<tailleGrille; i++){
             for(int j=0; j<this.tailleGrille; j++){
@@ -162,8 +171,10 @@ public class Jeu {
             if(cellule.territoire == 0){
                 
                 if(cellule.couleur.equals(celluleMere.couleur)){
+                    
                     cellule.ChangementTerritoire(tour % listeJoueur.size());
                     this.listeJoueur.get(tour % listeJoueur.size()).score = this.listeJoueur.get(tour % listeJoueur.size()).score +1;
+                    
                     for (int i=0; i<taille; i++){
                           
                         if(cellule.listeVoisin.get(i).verifie == 0){
@@ -436,6 +447,13 @@ public class Jeu {
                     this.listeJoueur.get(i).AddCouleur(this.grilleCellule[0][tailleGrille-1].couleur);
                     this.grilleCellule[0][tailleGrille-1].territoire=4;
             }
+        }
+    }
+    
+    public void Sauvegarde() throws IOException{
+   
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("jeu.tmp"))) { 
+            output.writeObject(this);		 
         }
     }
 }

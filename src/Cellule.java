@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-public class Cellule {
+import java.io.Serializable;
+
+public class Cellule implements Serializable {
 
     String couleur;
     int territoire;

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,8 +22,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 
 public class Affichage extends JFrame {
@@ -79,6 +83,8 @@ public class Affichage extends JFrame {
         this.setResizable(false);
         menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
         
+       
+        
         retourHome.addActionListener(new RetourHome());
         sauvegarde.addActionListener(new Sauvegarde());
         
@@ -94,6 +100,14 @@ public class Affichage extends JFrame {
         
         this.add(menu);
         this.setVisible(true);
+        
+         URL url = Affichage.class.getResource("music.mp3");
+        try (InputStream audioIn = url.openStream()) {
+            Player clip = new Player(audioIn);
+	clip.play();
+        } catch (IOException | JavaLayerException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public void CreationMenu(){
@@ -744,7 +758,6 @@ public class Affichage extends JFrame {
             if(jeu.listeJoueur.get(i).score > scoreMax){
                 finJeu=1;
                 this.getContentPane().removeAll();
-                
                 AddPanelFinJeu(jeu.listeJoueur.get(i).nom);
             } 
         } 

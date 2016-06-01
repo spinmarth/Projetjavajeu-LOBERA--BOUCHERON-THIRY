@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -69,9 +71,13 @@ public class Affichage extends JFrame {
     private JMenu menuBar1 = new JMenu("Options");
     private JMenuItem retourHome = new JMenuItem("Accueil");
     private JMenuItem sauvegarde = new JMenuItem("Sauvegarder");
+    private JMenuItem mute = new JMenuItem("Mute");
+    private JMenuItem unmute = new JMenuItem("Unmute");
     private JMenuBar menuBar = new JMenuBar();
   
     private int finJeu=0;
+    
+    private Music music;
     
     private Jeu jeu = new Jeu();
     
@@ -87,9 +93,12 @@ public class Affichage extends JFrame {
         
         retourHome.addActionListener(new RetourHome());
         sauvegarde.addActionListener(new Sauvegarde());
+        mute.addActionListener(new Mute());
+        unmute.addActionListener(new Unmute());
         
         menuBar1.add(retourHome);
         menuBar1.add(sauvegarde);
+        menuBar1.add(mute);
         menuBar.add(menuBar1);
         this.setJMenuBar(menuBar);
         
@@ -101,13 +110,13 @@ public class Affichage extends JFrame {
         this.add(menu);
         this.setVisible(true);
         
-         URL url = Affichage.class.getResource("music.mp3");
-        try (InputStream audioIn = url.openStream()) {
-            Player clip = new Player(audioIn);
-	clip.play();
-        } catch (IOException | JavaLayerException e1) {
-            e1.printStackTrace();
-        }
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+		music=new Music();
+		music.start();
+            }
+	});
     }
 
     public void CreationMenu(){
@@ -854,6 +863,25 @@ public class Affichage extends JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(Affichage.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    class Mute implements ActionListener {
+        
+        public void actionPerformed(ActionEvent e) {
+            menuBar1.remove(mute);
+            menuBar1.add(unmute);
+            music.stop();
+        }
+    }
+    
+    class Unmute implements ActionListener {
+        
+        public void actionPerformed(ActionEvent e) {
+            menuBar1.remove(unmute);
+            menuBar1.add(mute);
+            music=new Music();
+            music.start();
         }
     }
     
